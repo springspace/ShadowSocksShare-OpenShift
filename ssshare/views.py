@@ -19,7 +19,7 @@ DOMAIN = 'http://ss.pythonic.life'
 DISQUS_IDENTIFIER = 'shadowsocksshare'
 
 
-servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 帐号分享'}}]
+servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 账号分享'}}]
 curtime = time.ctime()
 
 encoded = ''
@@ -46,7 +46,7 @@ def update_servers():
             for server in website['data']:
                 full_decoded.append(server['ssr_uri'])
                 full_jsons.append(server['json'])
-                if server['status'] is True:
+                if server['status'] > 0:
                     decoded.append(server['ssr_uri'])
                     jsons.append(server['json'])
 
@@ -88,7 +88,7 @@ def index():
             ss=ss_title[random.randint(0, len(ss_title) - 1)],
             counter=counter(),
             ctime=curtime,
-            PAGE_URL=DOMAIN+'/',
+            PAGE_URL=DOMAIN + '/',
             PAGE_IDENTIFIER='shadowsocksshare'
         )
     except Exception as e:

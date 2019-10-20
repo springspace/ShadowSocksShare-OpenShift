@@ -7,22 +7,24 @@ import random
 
 
 def test_connection(
-        url='http://ip.cn',
-        headers={'User-Agent': 'curl/7.21.3 (i686-pc-linux-gnu) '
-                 'libcurl/7.21.3 OpenSSL/0.9.8o zlib/1.2.3.4 libidn/1.18'},
+        url='http://cip.cc',
+        headers={'User-Agent': 'ShadowSocksShare/web/crawler libcurl/7.21.3 OpenSSL/0.9.8o zlib/1.2.3.4 libidn/1.18'},
         proxies=None, port=1080, timeout=10):
     if not proxies:
-        proxies = {'http': 'socks5://localhost:{}'.format(port),
-                   'https': 'socks5://localhost:{}'.format(port)}
+        proxies = {'http': 'socks5://localhost:{}'.format(port), 'https': 'socks5://localhost:{}'.format(port)}
     ok = False
     content = ''
     try:
-        respond = requests.get(url, headers=headers,
-                               proxies=proxies, timeout=timeout)
-        ok = respond.ok
+        start = time.time()
+        respond = requests.get(url, headers=headers, proxies=proxies, timeout=timeout)
+        if respond.ok:
+            ok = (time.time() - start) * 1000
+        else:
+            ok = respond.ok
         content = respond.text
     except Exception as e:
         print(e)
+        content = repr(e)
     return ok, content
 
 
@@ -60,7 +62,7 @@ def validate(websites):
         for server in servers['data']:
             result, info = test_socks_server(str_json=server['json'])
             print('>' * 10, '结果:', result)
-            if result is True:
+            if result > 0:
                 print('>' * 10, '测试通过！')
             elif result == -1:
                 print(server['json'])
